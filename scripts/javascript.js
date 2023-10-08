@@ -27,6 +27,8 @@ async function uploadImage(input, itemName) {
             $('<img id="' + input.id + '-image" src="images/' + fileName + '" />').insertAfter("#" + input.id);
             $('<button style="display:\"\"" id="remove-' + input.id + '-image" onclick="removeItemImage(\'' + input.id + '\', \'' + itemName + '\')">Remove Image</button>').insertAfter("#" + input.id + "-image");
         }
+
+        clearInputFile(input);
     });
 }
 
@@ -159,6 +161,21 @@ function applySearchFilter() {
 
             if (levels.length > 0 && (Number(item["level"]) < minLevel || Number(item["level"]) > maxLevel))
                 rows[i].style.display = "none";
+        }
+    }
+}
+
+function clearInputFile(f) {
+    if (f.value) {
+        try {
+            f.value = ''; //for IE11, latest Chrome/Firefox/Opera...
+        } catch (err) { }
+        if (f.value) { //for IE5 ~ IE10
+            var form = document.createElement('form'),
+                parentNode = f.parentNode, ref = f.nextSibling;
+            form.appendChild(f);
+            form.reset();
+            parentNode.insertBefore(f, ref);
         }
     }
 }
