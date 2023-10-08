@@ -8,26 +8,22 @@ $(document).ready(function () {
     });
 });
 
-async function uploadImage(input, itemName) {
+async function uploadImage(input) {
     let formData = new FormData();
     let fileName = input.files[0].name;
+    let itemId = $(input).data("item-id");
+    let itemName = $(input).data("item-name");
 
     formData.append("file", input.files[0]);
-    formData.append("name", input.name);
+    formData.append("name", itemName);
 
     await fetch("../php/upload-image.php", {
         method: "POST",
         body: formData
     }).then(response => {
-        let imgId = "#" + input.id + "-image";
-
-        if ($(imgId).length)
-            $(imgId).attr("src", "images/" + fileName);
-        else {
-            $('<img id="' + input.id + '-image" src="images/' + fileName + '" />').insertAfter("#" + input.id);
-            $('<button style="display:\"\"" id="remove-' + input.id + '-image" onclick="removeItemImage(\'' + input.id + '\', \'' + itemName + '\')">Remove Image</button>').insertAfter("#" + input.id + "-image");
-        }
-
+        $("img[data-item-id='" + itemId + "']").attr("src", "images/" + fileName);
+        $("button[data-item-id='" + itemId + "'], .remove-image").css("display", "");
+        $("input[data-item-id='" + itemId + "']").css("display", "none");
         clearInputFile(input);
     });
 }
@@ -35,7 +31,7 @@ async function uploadImage(input, itemName) {
 async function setAccountName(input) {
     let formData = new FormData();
     formData.append("name", input.id);
-    formData.append("account", input.innerHTML)
+    formData.append("account", input.innerText)
 
     await fetch("../php/set-account-name.php", {
         method: "POST",
@@ -44,10 +40,10 @@ async function setAccountName(input) {
 }
 
 async function setPercent(input) {
-    if (!isNaN(input.innerHTML)) {
+    if (!isNaN(input.innerText) && Number(input.innerText) <= 100) {
         let formData = new FormData();
         formData.append("name", input.id);
-        formData.append("percent", input.innerHTML)
+        formData.append("percent", input.innerText)
 
         await fetch("../php/set-percent.php", {
             method: "POST",
@@ -56,8 +52,10 @@ async function setPercent(input) {
     }
 }
 
-async function removeItemImage(itemId, itemName) {
+async function removeItemImage(button) {
     let formData = new FormData();
+    let itemId = $(button).data("item-id");
+    let itemName = $(button).data("item-name");
 
     formData.append("itemName", itemName);
 
@@ -65,8 +63,9 @@ async function removeItemImage(itemId, itemName) {
         method: "POST",
         body: formData
     }).then(response => {
-        document.getElementById(itemId + "-image").remove();
-        document.getElementById("remove-" + itemId + "-image").setAttribute("style", "display:none");
+        $("img[data-item-id='" + itemId + "']").attr("src", "");
+        $("input[data-item-id='" + itemId + "']").css("display", "");
+        $("button[data-item-id='" + itemId + "'], .remove-image").css("display", "none");
     });
 }
 
@@ -145,7 +144,7 @@ function applySearchFilter() {
             if (misc.length > 0) {
                 if (misc.includes("owned") && cells[3].textContent.trim() === "" && cells[4].textContent.trim() === "")
                     rows[i].style.display = "none";
-                else if (misc.includes("not-owned") && (cells[2].textContent.trim() !== "" || cells[3].textContent.trim() !== ""))
+                else if (misc.includes("not-owned") && cells[2].textContent.trim() !== "" && cells[3].textContent.trim() !== "")
                     rows[i].style.display = "none";
                 else if (misc.includes("untradable") && (!item.hasOwnProperty("restrictions") || item["restrictions"] !== "Untradable"))
                     rows[i].style.display = "none";
