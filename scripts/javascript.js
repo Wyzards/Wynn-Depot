@@ -6,6 +6,19 @@ $(document).ready(function () {
             data = {};
         $.post(ajaxurl, data);
     });
+
+    $("img.item-image").click(function () {
+        showImage($(this).data("item-id"));
+    });
+
+    $(".close").click(function () {
+        $("#myModal").css("display", "none");
+    });
+
+    window.onclick = function (event) {
+        if (event.target == document.getElementById("myModal"))
+            $("#myModal").css("display", "none");
+    }
 });
 
 async function uploadImage(input) {
@@ -24,6 +37,7 @@ async function uploadImage(input) {
         $("img[data-item-id='" + itemId + "']").attr("src", "images/" + fileName);
         $("input[data-item-id='" + itemId + "']").css("display", "none");
         $("button[data-item-id='" + itemId + "'].show-image").css("display", "");
+        $("button[data-item-id='" + itemId + "'].remove-image").css("display", "");
         showImage(itemId);
         clearInputFile(input);
     });
@@ -67,7 +81,7 @@ async function removeItemImage(button) {
         $("img[data-item-id='" + itemId + "']").attr("src", "");
         $("input[data-item-id='" + itemId + "']").css("display", "");
         $("button[data-item-id='" + itemId + "'].show-image").css("display", "none");
-        showImage(itemId);
+        $("button[data-item-id='" + itemId + "'].remove-image").css("display", "none");
     });
 }
 
@@ -181,18 +195,7 @@ function clearInputFile(f) {
     }
 }
 
-// Toggles
 function showImage(itemId) {
-    if ($("img[data-item-id='" + itemId + "']").css("display") === "none") {
-        // Show the image
-        $("img[data-item-id='" + itemId + "']").css("display", "");
-        $("button[data-item-id='" + itemId + "'].remove-image").css("display", "");
-        $("button[data-item-id='" + itemId + "'].show-image").text("Hide Image");
-    }
-    else {
-        // Hide the image
-        $("img[data-item-id='" + itemId + "']").css("display", "none");
-        $("button[data-item-id='" + itemId + "'].remove-image").css("display", "none");
-        $("button[data-item-id='" + itemId + "'].show-image").text("Show Image");
-    }
+    $("#modal-image").attr("src", $("img[data-item-id='" + itemId + "']").attr("src"));
+    $("#myModal").css("display", "flex");
 }
