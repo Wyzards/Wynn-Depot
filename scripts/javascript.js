@@ -22,8 +22,9 @@ async function uploadImage(input) {
         body: formData
     }).then(response => {
         $("img[data-item-id='" + itemId + "']").attr("src", "images/" + fileName);
-        $("button[data-item-id='" + itemId + "'], .remove-image").css("display", "");
         $("input[data-item-id='" + itemId + "']").css("display", "none");
+        $("button[data-item-id='" + itemId + "'].show-image").css("display", "");
+        showImage(itemId);
         clearInputFile(input);
     });
 }
@@ -65,7 +66,8 @@ async function removeItemImage(button) {
     }).then(response => {
         $("img[data-item-id='" + itemId + "']").attr("src", "");
         $("input[data-item-id='" + itemId + "']").css("display", "");
-        $("button[data-item-id='" + itemId + "'], .remove-image").css("display", "none");
+        $("button[data-item-id='" + itemId + "'].show-image").css("display", "none");
+        showImage(itemId);
     });
 }
 
@@ -176,5 +178,21 @@ function clearInputFile(f) {
             form.reset();
             parentNode.insertBefore(f, ref);
         }
+    }
+}
+
+// Toggles
+function showImage(itemId) {
+    if ($("img[data-item-id='" + itemId + "']").css("display") === "none") {
+        // Show the image
+        $("img[data-item-id='" + itemId + "']").css("display", "");
+        $("button[data-item-id='" + itemId + "'].remove-image").css("display", "");
+        $("button[data-item-id='" + itemId + "'].show-image").text("Hide Image");
+    }
+    else {
+        // Hide the image
+        $("img[data-item-id='" + itemId + "']").css("display", "none");
+        $("button[data-item-id='" + itemId + "'].remove-image").css("display", "none");
+        $("button[data-item-id='" + itemId + "'].show-image").text("Show Image");
     }
 }
