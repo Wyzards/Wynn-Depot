@@ -45,7 +45,7 @@ async function uploadImage(input) {
 
 async function setAccountName(input) {
     let formData = new FormData();
-    formData.append("name", input.id);
+    formData.append("name", $(input).data("item-name"));
     formData.append("account", input.innerText)
 
     await fetch("../php/set-account-name.php", {
@@ -132,14 +132,7 @@ function applySearchFilter() {
         cells = rows[i].getElementsByTagName("td");
 
         if (cells[1]) {
-            var data = cells[1].innerHTML.trim().split("<br>");
-            var item = {};
-
-            data.forEach(keypair => {
-                var key = keypair.split(": ")[0];
-                var value = keypair.split(": ")[1];
-                item[key] = value;
-            });
+            var item = JSON.parse(cells[2].innerText);
 
             rows[i].style.display = "";
 
