@@ -57,7 +57,7 @@ async function setAccountName(input) {
 async function setPercent(input) {
     if (!isNaN(input.innerText) && Number(input.innerText) <= 100) {
         let formData = new FormData();
-        formData.append("name", input.id);
+        formData.append("name", $(input).data("item-name"));
         formData.append("percent", input.innerText)
 
         await fetch("../php/set-percent.php", {
