@@ -100,7 +100,16 @@ function sortTable() {
 }
 
 function preppedDataToItem(preppedData) {
-    
+    var data = preppedData.innerHTML.trim().split("<br>");
+    var item = {};
+
+    data.forEach(keypair => {
+        var key = keypair.split(": ")[0];
+        var value = keypair.split(": ")[1];
+        item[key] = value;
+    });
+
+    return item;
 }
 
 function applySearchFilter() {
@@ -136,7 +145,7 @@ function applySearchFilter() {
         cells = rows[i].getElementsByTagName("td");
 
         if (cells[1]) {
-            var item = preppedDataToItem(rows[1]);
+            var item = preppedDataToItem(cells[1]);
 
             rows[i].style.display = "";
 
