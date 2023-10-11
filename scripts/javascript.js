@@ -99,6 +99,10 @@ function sortTable() {
     })));
 }
 
+function preppedDataToItem(preppedData) {
+    
+}
+
 function applySearchFilter() {
     let misc = [...document.getElementById("misc-filter").selectedOptions].map(option => option.value);
     let type = [...document.getElementById("type-filter").selectedOptions].map(option => option.value);
@@ -132,7 +136,7 @@ function applySearchFilter() {
         cells = rows[i].getElementsByTagName("td");
 
         if (cells[1]) {
-            var item = JSON.parse(cells[2].innerText);
+            var item = preppedDataToItem(rows[1]);
 
             rows[i].style.display = "";
 
