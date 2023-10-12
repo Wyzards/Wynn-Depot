@@ -58,7 +58,7 @@ async function setPercent(input) {
     if (!isNaN(input.innerText) && Number(input.innerText) <= 100) {
         let formData = new FormData();
         formData.append("name", $(input).data("item-name"));
-        formData.append("percent", input.innerText)
+        formData.append("percent", input.innerText.trim())
 
         await fetch("../php/set-percent.php", {
             method: "POST",
