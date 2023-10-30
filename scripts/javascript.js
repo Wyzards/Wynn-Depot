@@ -2,9 +2,13 @@ $(document).ready(function () {
     sortTable();
 
     $("#refreshapi").click(function () {
-        var ajaxurl = "php/refresh-api.php",
-            data = {};
-        $.post(ajaxurl, data);
+        var ajaxurl = "php/ajax.php";
+        $.post({
+            url: ajaxurl,
+            data: {
+                FUNCTION: "REFRESH_API"
+            }
+        });
     });
 
     $("img.item-image").click(function () {
@@ -29,8 +33,9 @@ async function uploadImage(input) {
 
     formData.append("file", input.files[0]);
     formData.append("name", itemName);
+    formData.append("FUNCTION", "UPLOAD_IMAGE");
 
-    await fetch("../php/upload-image.php", {
+    await fetch("../php/ajax.php", {
         method: "POST",
         body: formData
     }).then(response => {
@@ -47,8 +52,9 @@ async function setAccountName(input) {
     let formData = new FormData();
     formData.append("name", $(input).data("item-name"));
     formData.append("account", input.innerText)
+    formData.append("FUNCTION", "SET_ACCOUNT");
 
-    await fetch("../php/set-account-name.php", {
+    await fetch("../php/ajax.php", {
         method: "POST",
         body: formData
     });
@@ -59,8 +65,9 @@ async function setPercent(input) {
         let formData = new FormData();
         formData.append("name", $(input).data("item-name"));
         formData.append("percent", input.innerText.trim())
+        formData.append("FUNCTION", "SET_PERCENT");
 
-        await fetch("../php/set-percent.php", {
+        await fetch("../php/ajax.php", {
             method: "POST",
             body: formData
         });
@@ -73,8 +80,9 @@ async function removeItemImage(button) {
     let itemName = $(button).data("item-name");
 
     formData.append("itemName", itemName);
+    formData.append("FUNCTION", "REMOVE_IMAGE");
 
-    await fetch("../php/removeImg.php", {
+    await fetch("../php/ajax.php", {
         method: "POST",
         body: formData
     }).then(response => {
