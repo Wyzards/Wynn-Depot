@@ -13,8 +13,26 @@ class WynnItemSeeder extends Seeder
      */
     public function run(): void
     {
-        $items = Http::get("https://api.wynncraft.com/v3/item/database?fullResult");
+        $items = Http::get("https://api.wynncraft.com/v3/item/database?fullResult")->json();
 
-        dd($items);
+        foreach ($items as $name => $item)
+        {
+            if (!array_key_exists("type", $item) && !array_key_exists("accessoryType", $item))
+            {
+                continue;
+            }
+
+            WynnItem::updateOrCreate(
+                [
+                    'internal_name' => $item["internalName"]
+                ],
+                [
+                    'name' => $name,
+                    'level' => $item["requirements"]["level"],
+                    'tier' => $item["tier"],
+                    'type' => array_key_exists("type", $item) ? $item["type"] : $item["accessoryType"]
+                ]
+            );
+        }
     }
 }

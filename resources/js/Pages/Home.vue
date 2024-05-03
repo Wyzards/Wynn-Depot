@@ -1,54 +1,111 @@
 <template>
-    <Head title="Home" />
+    <div>
+        <Head title="Home" />
 
-    <main class="flex items-center bg-blue-300 flex-col">
-        <h1 class="text-8xl">WynnDepot.</h1>
+        <main class="flex items-center bg-blue-300 flex-col min-h-screen">
+            <h1 class="text-8xl">WynnDepot.</h1>
 
-        <div class="flex justify-between mt-10">
-            <input
-                id="searchbar"
-                type="text"
-                placeholder="Search for items..."
-            />
+            <ItemModal :itemImagePath="modalItemId" />
 
-            <div class="ml-2">
-                <p class="text-xl">Filters</p>
+            <div class="flex justify-between mt-10">
+                <input
+                    v-model="search"
+                    id="searchbar"
+                    type="text"
+                    placeholder="Search for items..."
+                />
 
-                <div class="flex gap-3">
-                    <button>Tier</button>
-                    <button>Type</button>
-                    <button>Level</button>
-                    <button>Misc</button>
+                <div class="ml-2">
+                    <p class="text-xl">Filters</p>
+
+                    <div class="flex gap-2">
+                        <FilterDropdown
+                            :options="[
+                                'Helmet',
+                                'Chestplate',
+                                'Leggings',
+                                'Boots',
+                                'Necklace',
+                                'Bracelet',
+                                'Ring',
+                            ]"
+                        >
+                            Type
+                        </FilterDropdown>
+                        <FilterDropdown
+                            :options="[
+                                'Normal',
+                                'Unique',
+                                'Rare',
+                                'Legendary',
+                                'Fabled',
+                                'Mythic',
+                                'Set',
+                            ]"
+                        >
+                            Tier
+                        </FilterDropdown>
+                        <FilterDropdown
+                            :options="[
+                                '1-10',
+                                '11-20',
+                                '21-30',
+                                '31-40',
+                                '41-50',
+                                '51-60',
+                                '61-70',
+                                '71-80',
+                                '81-90',
+                                '91-100',
+                                '100+',
+                            ]"
+                        >
+                            Level
+                        </FilterDropdown>
+                        <FilterDropdown
+                            :options="[
+                                'Owned',
+                                'Not Owned',
+                                'Untradeable',
+                                'Quest Item',
+                            ]"
+                        >
+                            Misc
+                        </FilterDropdown>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <table class="border border-black m-10">
-            <thead>
-                <tr>
-                    <th class="border border-black">Item Name</th>
-                    <th class="border border-black">Level</th>
-                    <th class="border border-black">Type</th>
-                    <th class="border border-black">Tier</th>
-                    <th class="border border-black">Image</th>
-                </tr>
-            </thead>
+            <WynnItemTable :items="items" />
 
-            <tr v-for="item in items" :key="item.id">
-                <td class="border border-black">{{ item.name }}</td>
-                <td class="border border-black">{{ item.level }}</td>
-                <td class="border border-black">{{ item.type }}</td>
-                <td class="border border-black">{{ item.tier }}</td>
-                <td class="border border-black">
-                    <input type="file" />
-                </td>
-            </tr>
-        </table>
-    </main>
+            <Pagination :links="items.links" />
+        </main>
+    </div>
 </template>
 
 <script setup>
-defineProps({
-    items: Array,
+import WynnItemTable from "../Components/WynnItemTable/WynnItemTable.vue";
+import FilterDropdown from "../Components/WynnItemTable/FilterDropdown.vue";
+import Pagination from "../Components/Pagination.vue";
+import ItemModal from "../Components/WynnItemTable/ItemModal.vue";
+import debounce from "lodash/debounce";
+import { ref, watch } from "vue";
+
+let props = defineProps({
+    items: Object,
+    filters: Object,
 });
+
+let search = ref(props.filters.search);
+
+watch(
+    search,
+    debounce(function (value) {
+        router.get(
+            "/items",
+            { search: value },
+            { preserveState: true, replace: true }
+        );
+    }, 300)
+);
 </script>

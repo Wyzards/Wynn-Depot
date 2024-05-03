@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('type');
             $table->string('tier');
             $table->string('image')->nullable();
-            $table->rememberToken();
+            $table->double('percent')->nullable();
             $table->timestamps();
         });
     }
