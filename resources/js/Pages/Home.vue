@@ -5,7 +5,7 @@
         <main class="flex items-center bg-blue-300 flex-col min-h-screen">
             <h1 class="text-8xl">WynnDepot.</h1>
 
-            <ItemModal :itemImagePath="modalItemId" />
+            <ItemModal />
 
             <div class="flex justify-between mt-10">
                 <input
@@ -90,6 +90,7 @@ import Pagination from "../Components/Pagination.vue";
 import ItemModal from "../Components/WynnItemTable/ItemModal.vue";
 import debounce from "lodash/debounce";
 import { ref, watch } from "vue";
+import { router } from "@inertiajs/vue3";
 
 let props = defineProps({
     items: Object,
@@ -102,7 +103,7 @@ watch(
     search,
     debounce(function (value) {
         router.get(
-            "/items",
+            "/",
             { search: value },
             { preserveState: true, replace: true }
         );
