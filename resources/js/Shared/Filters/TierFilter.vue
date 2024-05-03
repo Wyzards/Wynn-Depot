@@ -1,18 +1,19 @@
 <template>
     <FilterDropdown
         :options="[
-            'Helmet',
-            'Chestplate',
-            'Leggings',
-            'Boots',
-            'Necklace',
-            'Bracelet',
-            'Ring',
-         ]"
+            'normal',
+            'unique',
+            'rare',
+            'legendary',
+            'fabled',
+            'mythic',
+            'set',
+        ]"
     >
-        Type
+        Tier
     </FilterDropdown>
 </template>
-<script setup lang="ts">
-import FilterDropdown from "@/Shared/Filters/FilterDropdown.vue";
+
+<script setup>
+import FilterDropdown from "./FilterDropdown.vue";
 </script>

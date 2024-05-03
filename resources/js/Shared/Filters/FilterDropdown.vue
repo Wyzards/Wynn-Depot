@@ -1,5 +1,5 @@
 <template>
-    <Dropdown :closeOnClick="false">
+    <Dropdown :closeOnClick="false" width="w-fit">
         <template #trigger>
             <FilterTrigger><slot /></FilterTrigger>
         </template>

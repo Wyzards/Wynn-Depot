@@ -1,102 +1,29 @@
 <template>
     <div>
-        <Head title="Home"/>
+        <Head title="Home" />
 
         <main class="flex items-center bg-blue-300 flex-col min-h-screen">
             <h1 class="text-8xl">WynnDepot.</h1>
 
-            <ItemModal/>
+            <ItemModal />
 
-            <div class="flex justify-between mt-10">
-                <input
-                    v-model="search"
-                    id="searchbar"
-                    type="text"
-                    placeholder="Search for items..."
-                />
+            <Filters :filters="filters" />
 
-                <div class="ml-2">
-                    <p class="text-xl">Filters</p>
+            <WynnItemTable :items="items" />
 
-                    <div class="flex gap-2">
-
-                        <FilterDropdown
-                            :options="[
-                                'Normal',
-                                'Unique',
-                                'Rare',
-                                'Legendary',
-                                'Fabled',
-                                'Mythic',
-                                'Set',
-                            ]"
-                        >
-                            Tier
-                        </FilterDropdown>
-                        <FilterDropdown
-                            :options="[
-                                '1-10',
-                                '11-20',
-                                '21-30',
-                                '31-40',
-                                '41-50',
-                                '51-60',
-                                '61-70',
-                                '71-80',
-                                '81-90',
-                                '91-100',
-                                '100+',
-                            ]"
-                        >
-                            Level
-                        </FilterDropdown>
-                        <FilterDropdown
-                            :options="[
-                                'Owned',
-                                'Not Owned',
-                                'Untradeable',
-                                'Quest Item',
-                            ]"
-                        >
-                            Misc
-                        </FilterDropdown>
-                    </div>
-                </div>
-            </div>
-
-            <WynnItemTable :items="items"/>
-
-            <Pagination :links="items.links"/>
+            <Pagination :links="items.links" />
         </main>
     </div>
 </template>
 
 <script setup>
 import WynnItemTable from "../Shared/ItemTable/WynnItemTable.vue";
-import FilterDropdown from "../Shared/Filters/FilterDropdown.vue";
 import Pagination from "../Shared/Pagination.vue";
 import ItemModal from "../Shared/ItemTable/ItemModal.vue";
-import debounce from "lodash/debounce";
-import {ref, watch} from "vue";
-import {router} from "@inertiajs/vue3";
+import Filters from "@/Shared/Filters/Filters.vue";
 
 let props = defineProps({
     items: Object,
     filters: Object,
 });
-
-let search = ref(props.filters.search);
-let tiers = ref(props.filters.tier);
-let types = ref(props.filters.type);
-
-watch(
-    search,
-    debounce(function (value) {
-        router.get(
-            "/",
-            {search: value},
-            {preserveState: true, replace: true}
-        );
-    }, 300)
-);
 </script>
