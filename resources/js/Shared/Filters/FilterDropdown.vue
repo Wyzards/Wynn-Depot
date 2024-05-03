@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import Dropdown from "../Dropdown.vue";
+import Dropdown from "../../Components/Dropdown.vue";
 import FilterTrigger from "./FilterTrigger.vue";
 import FilterOption from "./FilterOption.vue";
 

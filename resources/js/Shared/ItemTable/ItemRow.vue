@@ -20,7 +20,7 @@
 
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-import PrimaryButton from "../PrimaryButton.vue";
+import PrimaryButton from "../../Components/PrimaryButton.vue";
 import { useItemImageStore } from "../../../../stores/ItemImageStore.js";
 
 const props = defineProps({

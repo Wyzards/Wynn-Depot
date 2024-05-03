@@ -1,11 +1,11 @@
 <template>
     <div>
-        <Head title="Home" />
+        <Head title="Home"/>
 
         <main class="flex items-center bg-blue-300 flex-col min-h-screen">
             <h1 class="text-8xl">WynnDepot.</h1>
 
-            <ItemModal />
+            <ItemModal/>
 
             <div class="flex justify-between mt-10">
                 <input
@@ -19,19 +19,7 @@
                     <p class="text-xl">Filters</p>
 
                     <div class="flex gap-2">
-                        <FilterDropdown
-                            :options="[
-                                'Helmet',
-                                'Chestplate',
-                                'Leggings',
-                                'Boots',
-                                'Necklace',
-                                'Bracelet',
-                                'Ring',
-                            ]"
-                        >
-                            Type
-                        </FilterDropdown>
+
                         <FilterDropdown
                             :options="[
                                 'Normal',
@@ -76,21 +64,21 @@
                 </div>
             </div>
 
-            <WynnItemTable :items="items" />
+            <WynnItemTable :items="items"/>
 
-            <Pagination :links="items.links" />
+            <Pagination :links="items.links"/>
         </main>
     </div>
 </template>
 
 <script setup>
-import WynnItemTable from "../Components/WynnItemTable/WynnItemTable.vue";
-import FilterDropdown from "../Components/WynnItemTable/FilterDropdown.vue";
-import Pagination from "../Components/Pagination.vue";
-import ItemModal from "../Components/WynnItemTable/ItemModal.vue";
+import WynnItemTable from "../Shared/ItemTable/WynnItemTable.vue";
+import FilterDropdown from "../Shared/Filters/FilterDropdown.vue";
+import Pagination from "../Shared/Pagination.vue";
+import ItemModal from "../Shared/ItemTable/ItemModal.vue";
 import debounce from "lodash/debounce";
-import { ref, watch } from "vue";
-import { router } from "@inertiajs/vue3";
+import {ref, watch} from "vue";
+import {router} from "@inertiajs/vue3";
 
 let props = defineProps({
     items: Object,
@@ -98,14 +86,16 @@ let props = defineProps({
 });
 
 let search = ref(props.filters.search);
+let tiers = ref(props.filters.tier);
+let types = ref(props.filters.type);
 
 watch(
     search,
     debounce(function (value) {
         router.get(
             "/",
-            { search: value },
-            { preserveState: true, replace: true }
+            {search: value},
+            {preserveState: true, replace: true}
         );
     }, 300)
 );

@@ -6,7 +6,7 @@
 
 <script setup>
 import { useItemImageStore } from "/stores/ItemImageStore.js";
-import Modal from "../Modal.vue";
+import Modal from "../../Components/Modal.vue";
 
 let itemImage = useItemImageStore();
 
