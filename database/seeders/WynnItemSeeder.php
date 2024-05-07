@@ -30,7 +30,8 @@ class WynnItemSeeder extends Seeder
                     'name' => $name,
                     'level' => $item["requirements"]["level"],
                     'tier' => $item["tier"],
-                    'type' => array_key_exists("type", $item) ? $item["type"] : $item["accessoryType"]
+                    'type' => array_key_exists("type", $item) ? $item["type"] : $item["accessoryType"],
+                    'restrictions' => array_key_exists("restrictions", $item) ? strtolower($item["restrictions"]) : null
                 ]
             );
         }

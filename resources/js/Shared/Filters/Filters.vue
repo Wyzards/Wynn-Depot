@@ -1,42 +1,123 @@
 <template>
-    <div class="flex justify-between mt-10">
-        <input
-            v-model="search"
-            id="searchbar"
-            type="text"
-            placeholder="Search for items..."
-        />
+    <div class="flex gap-2">
+        <input v-model="search" type="text" placeholder="Search for items..." />
 
-        <div class="ml-2">
-            <p class="text-xl">Filters</p>
+        <FilterDropdown
+            :options="filters.tiers.options"
+            :selected="filters.tiers.selected"
+            @selectFilter="
+                (sel) => {
+                    filters.tiers.selected = sel;
+                    updateFilters();
+                }
+            "
+        >
+            Tier
+        </FilterDropdown>
 
-            <div class="flex gap-2">
-                <TierFilter />
-            </div>
-        </div>
+        <FilterDropdown
+            :options="filters.types.options"
+            :selected="filters.types.selected"
+            @selectFilter="
+                (sel) => {
+                    filters.types.selected = sel;
+                    updateFilters();
+                }
+            "
+        >
+            Type
+        </FilterDropdown>
+
+        <Dropdown :closeOnClick="false">
+            <template #trigger>
+                <button
+                    class="px-2 text-sm text-white bg-blue-500 border border-black rounded-lg h-7"
+                >
+                    Level
+                </button>
+            </template>
+
+            <template #content>
+                <div class="flex justify-evenly">
+                    <input
+                        v-model="minLvl"
+                        type="text"
+                        placeholder="0"
+                        class="w-14"
+                    />
+                    <input
+                        v-model="maxLvl"
+                        type="text"
+                        placeholder="105"
+                        class="w-14"
+                    />
+                </div>
+            </template>
+        </Dropdown>
+
+        <FilterDropdown
+            :options="filters.misc.options"
+            :selected="filters.misc.selected"
+            @selectFilter="
+                (sel) => {
+                    filters.misc.selected = sel;
+                    updateFilters();
+                }
+            "
+        >
+            Misc
+        </FilterDropdown>
+
+        <FilterDropdown
+            :options="filters.misc.options"
+            :selected="filters.misc.selected"
+            @selectFilter="
+                (sel) => {
+                    filters.misc.selected = sel;
+                    updateFilters();
+                }
+            "
+        >
+            Storage
+        </FilterDropdown>
     </div>
 </template>
 
 <script setup>
-import debounce from "lodash/debounce";
-import { ref, watch } from "vue";
+import Dropdown from "@/Components/Dropdown.vue";
+import { useItemFilterStore } from "/stores/ItemFilterStore.js";
+import FilterDropdown from "./FilterDropdown.vue";
 import { router } from "@inertiajs/vue3";
-import TierFilter from "./TierFilter.vue";
+import { watch, ref } from "vue";
+import debounce from "lodash/debounce";
 
-const props = defineProps({
-    filters: Object,
-});
-
-let search = ref(props.filters.search);
+const filters = useItemFilterStore();
+const search = ref(filters.search);
+const minLvl = ref(filters.level.min);
+const maxLvl = ref(filters.level.max);
 
 watch(
-    search,
-    debounce(function (value) {
-        router.get(
-            "/",
-            { search: value },
-            { preserveState: true, replace: true }
-        );
+    [search, minLvl, maxLvl],
+    debounce(function (values) {
+        filters.search = search;
+        filters.level.min = minLvl;
+        filters.level.max = maxLvl;
+
+        updateFilters();
     }, 300)
 );
+
+function updateFilters() {
+    router.get(
+        "/",
+        {
+            search: filters.search,
+            tier: filters.tiers.selected,
+            type: filters.types.selected,
+            level: filters.level,
+            misc: filters.misc.selected,
+        },
+        { preserveState: true, replace: true }
+    );
+}
 </script>

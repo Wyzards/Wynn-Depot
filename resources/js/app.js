@@ -21,9 +21,9 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
-            .use(pinia)
             .component("Head", Head)
             .component("Link", Link)
+            .use(pinia)
             .mount(el);
     },
     progress: {

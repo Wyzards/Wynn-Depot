@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->integer('level');
             $table->string('type');
             $table->string('tier');
+            $table->string('restrictions')->nullable();
             $table->string('image')->nullable();
             $table->double('percent')->nullable();
             $table->timestamps();
