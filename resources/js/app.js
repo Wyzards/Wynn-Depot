@@ -1,7 +1,7 @@
 import "./bootstrap";
 import "../css/app.css";
 
-import { createApp, h } from "vue";
+import { createApp, h, watch } from "vue";
 import { createInertiaApp, Link, Head } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
@@ -18,6 +18,18 @@ createInertiaApp({
         ),
     setup({ el, App, props, plugin }) {
         const pinia = createPinia();
+
+        watch(
+            pinia.state,
+            (state) => {
+                localStorage.setItem(
+                    "itemFilter",
+                    JSON.stringify(state.itemFilter)
+                );
+            },
+            { deep: true }
+        );
+
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)

@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->integer('level');
             $table->string('type');
             $table->string('tier');
+            $table->string('notes')->nullable();
+            $table->string('storage')->nullable();
             $table->string('restrictions')->nullable();
             $table->string('image')->nullable();
             $table->double('percent')->nullable();

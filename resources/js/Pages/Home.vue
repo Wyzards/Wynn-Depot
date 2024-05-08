@@ -16,7 +16,7 @@
             >
                 <Link href="/login">Log In</Link>
             </button>
-            <h1 class="text-8xl">WynnDepot.</h1>
+            <h1 class="mb-8 text-8xl">WynnDepot.</h1>
             <Modal />
 
             <Filters />

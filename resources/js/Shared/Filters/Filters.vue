@@ -80,6 +80,28 @@
         >
             Storage
         </FilterDropdown>
+
+        <button
+            @click="clearFilters"
+            class="p-2 bg-red-400 border border-black rounded-lg h-fit"
+        >
+            <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg">
+                <line
+                    x1="0"
+                    y1="0"
+                    x2="10"
+                    y2="10"
+                    style="stroke: black; stroke-width: 1"
+                />
+                <line
+                    x1="0"
+                    y1="10"
+                    x2="10"
+                    y2="0"
+                    style="stroke: black; stroke-width: 1"
+                />
+            </svg>
+        </button>
     </div>
 </template>
 
@@ -106,6 +128,17 @@ watch(
         updateFilters();
     }, 300)
 );
+
+function clearFilters() {
+    filters.search = null;
+    filters.tiers.selected = [];
+    filters.types.selected = [];
+    filters.level.min = 0;
+    filters.level.max = 105;
+    filters.misc.selected = [];
+
+    updateFilters();
+}
 
 function updateFilters() {
     router.get(

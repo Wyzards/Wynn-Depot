@@ -4,7 +4,7 @@
             <button
                 class="px-2 text-sm text-white bg-blue-500 border border-black rounded-lg h-7"
             >
-                <slot />
+                <slot /> {{ selected.length > 0 ? `(${selected.length})` : "" }}
             </button>
         </template>
 

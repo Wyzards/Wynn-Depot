@@ -5,89 +5,63 @@
         <td class="border border-black">{{ item.type }}</td>
         <td class="border border-black">{{ item.tier }}</td>
         <td class="border border-black">{{ item.restrictions }}</td>
-        <td
-            class="border border-black"
-            :contenteditable="!!usePage().props.auth.user"
-            @input="editStorage"
-        >
-            {{ item.storage }}
-            <p
-                v-if="itemForm.errors.percent"
-                v-text="itemForm.errors.percent"
-                class="text-red-500"
-            />
-        </td>
-
-        <td
-            class="border border-black"
-            :contenteditable="!!usePage().props.auth.user"
-            @input="editPercent"
-        >
+        <Editable :callback="editPercent" :errors="itemForm.errors.percent">
             {{ item.percent }}
-            <p
-                v-if="itemForm.errors.percent"
-                v-text="itemForm.errors.percent"
-                class="text-red-500"
-            />
-        </td>
+        </Editable>
+        <Editable :callback="editStorage" :errors="itemForm.errors.storage">
+            {{ item.storage }}
+        </Editable>
+        <Editable :callback="editNotes" :errors="itemForm.errors.notes">
+            {{ item.notes }}
+        </Editable>
 
-        <td class="border border-black">
-            <input type="file" v-if="!item.image" @change="handleFileChange" />
-            <p
-                v-if="itemForm.errors.screenshot"
-                v-text="itemForm.errors.screenshot"
-                class="text-red-500"
-            />
-            <PrimaryButton v-if="item.image" @click="showImage">
-                Show Image
-            </PrimaryButton>
-
-            <PrimaryButton v-if="item.image" @click="removeImage">
-                Remove Image
-            </PrimaryButton>
-        </td>
+        <ScreenshotManager
+            @update="setScreenshot"
+            :imagePath="item.image"
+            :errors="itemForm.errors.screenshot"
+        />
     </tr>
 </template>
 
 <script setup>
-import { useForm, usePage } from "@inertiajs/vue3";
-import PrimaryButton from "../../Components/PrimaryButton.vue";
-import { useItemImageStore } from "../../../../stores/ItemImageStore.js";
+import { useForm } from "@inertiajs/vue3";
+import Editable from "./Editable.vue";
+import ScreenshotManager from "./ScreenshotManager.vue";
+import debounce from "lodash/debounce";
 
 const props = defineProps({
     item: Object,
 });
 
-let itemImage = useItemImageStore();
-
-function showImage() {
-    itemImage.path = "/storage/" + props.item.image;
-    itemImage.show = true;
-}
-
 const itemForm = useForm({
     percent: props.item.percent,
     id: props.item.id,
     screenshot: undefined,
+    storage: props.item.storage,
+    notes: props.item.notes,
 });
 
-function updateItem() {
+const updateItem = debounce(function (values) {
     itemForm.post(`items/${itemForm.id}`);
-}
+}, 300);
 
 function editPercent(event) {
     itemForm.percent = event.target.innerText;
-
     updateItem();
 }
 
-function handleFileChange(event) {
-    itemForm.screenshot = event.target.files[0];
+function editStorage(event) {
+    itemForm.storage = event.target.innerText;
     updateItem();
 }
 
-function removeImage() {
-    itemForm.screenshot = null;
+function editNotes(event) {
+    itemForm.notes = event.target.innerText;
+    updateItem();
+}
+
+function setScreenshot(screenshot) {
+    itemForm.screenshot = screenshot;
     updateItem();
 }
 </script>

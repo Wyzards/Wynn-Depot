@@ -9,6 +9,7 @@
                 <Heading>Restrictions</Heading>
                 <Heading>Percent</Heading>
                 <Heading>Storage</Heading>
+                <Heading>Notes</Heading>
                 <Heading>Image</Heading>
             </tr>
         </thead>

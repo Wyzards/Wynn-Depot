@@ -18,10 +18,14 @@ class WynnItemController extends Controller
     {
         $attributes = request()->validate([
             'percent' => 'numeric|min:0|max:100|nullable',
+            'storage' => 'nullable',
+            'notes' => 'nullable',
             'screenshot' => 'image|nullable|sometimes'
         ]);
 
         $item->percent = $attributes['percent'];
+        $item->storage = $attributes['storage'];
+        $item->notes = $attributes['notes'];
         $item->image = $attributes['screenshot'] ?? false ? request()->file('screenshot')->store('screenshots') : null;
 
         $item->save();

@@ -20,9 +20,11 @@ class WynnItem extends Model
             function (Builder $query, array $misc) {
                 $query->when(
                     in_array('owned', $misc),
-                    fn(Builder $query, $owned) => $query
-                        ->whereNotNull('percent')
-                        ->orWhereNotNull('image')
+                    fn(Builder $query, $owned) => $query->where(
+                        fn($query) => $query
+                            ->whereNotNull('percent')
+                            ->orWhereNotNull('image')
+                    )
                 );
 
                 $query->when(
@@ -54,8 +56,14 @@ class WynnItem extends Model
 
         $query->when($filters['tier'] ?? false, fn($query, $tier) => $query->whereIn('tier', $tier));
 
-        $query->when($filters['search'] ?? false, fn($query, $search) => $query->where(fn($query) => $query
-            ->where('name', 'like', "%{$search}%")
-            ->orWhere('internal_name', 'like', "%{$search}%")));
+        $query->when(
+            $filters['search'] ?? false,
+            fn($query, $search) => $query->where(
+                fn($query) => $query
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('internal_name', 'like', "%{$search}%")
+                    ->orWhere('notes', 'like', "%{$search}%")
+            )
+        );
     }
 }
