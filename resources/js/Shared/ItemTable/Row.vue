@@ -1,9 +1,9 @@
 <template>
     <tr>
-        <td class="border border-black">
-            <p class="p-1">{{ item.name }}</p>
+        <td class="border border-gray-300">
+            <p class="p-1" :class="item.tier">{{ item.name }}</p>
         </td>
-        <td class="border border-black">
+        <td class="border border-gray-300">
             <p class="p-1">{{ item.level }}</p>
         </td>
         <Editable
@@ -12,12 +12,12 @@
             width="w-30"
         />
         <Editable :errors="itemForm.errors.percent" v-model="percent" />
-        <td class="border border-black">
+        <td class="border border-gray-300 h-28">
             <textarea
                 style="width: 500px"
                 v-if="isAuthenticated"
                 v-model="notes"
-                class="overflow-hidden h-28"
+                class="text-gray-300 bg-gray-950 h-full m-0 mt-1.5 overflow-hidden border"
             />
             <p v-else class="p-1" v-text="notes" />
             <p

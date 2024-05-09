@@ -2,7 +2,7 @@
     <div>
         <Head title="Home" />
 
-        <main class="flex flex-col items-center min-h-screen bg-blue-300">
+        <main class="flex flex-col items-center min-h-screen bg-gray-950">
             <PrimaryButton v-if="auth" class="mt-2 mr-4 ms-auto">
                 <Link href="/logout" method="post">Log Out</Link>
             </PrimaryButton>
@@ -10,7 +10,7 @@
             <PrimaryButton v-else class="mt-2 mr-4 ms-auto">
                 <Link href="/login">Log In</Link>
             </PrimaryButton>
-            <h1 class="mb-8 font-pixelify text-8xl">WynnDepot.</h1>
+            <h1 class="mb-8 text-white font-pixelify text-9xl">WynnDepot.</h1>
             <Modal />
 
             <Filters :storageOptions="storageOptions" />

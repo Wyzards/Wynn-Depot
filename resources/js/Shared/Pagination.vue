@@ -18,7 +18,7 @@ defineProps({
             }"
             preserve-scroll
         >
-            <span v-html="link.label" />
+            <span class="text-gray-300" v-html="link.label" />
         </Component>
     </div>
 </template>

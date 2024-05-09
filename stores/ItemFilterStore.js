@@ -81,7 +81,7 @@ export let useItemFilterStore = defineStore("itemFilter", {
             this.misc.selected = [];
             this.storage.selected = [];
             this.sortBy = "name";
-            this.sortDirection = "asc";
+            this.sortDirection = undefined;
             this.update();
         },
     },

@@ -1,6 +1,6 @@
 <template>
-    <td class="border border-black">
-        <input :class="width" v-show="isAuthenticated" v-model="model" />
+    <td class="border border-gray-300 h-28">
+        <input :class="width" class="h-full text-center text-gray-300 bg-gray-950" v-show="isAuthenticated" v-model="model" />
         <p v-show="!isAuthenticated" v-text="model" class="p-1" />
         <p v-if="errors" v-text="errors" class="text-red-500" />
     </td>

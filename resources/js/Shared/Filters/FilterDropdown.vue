@@ -36,7 +36,7 @@ const hasOptions = computed(() => props.options.length > 0);
 
 function clickFilter(filterOption) {
     if (props.selected.includes(filterOption)) {
-        props.selected.splice(props.selected.indexOf(filterOption));
+        props.selected.splice(props.selected.indexOf(filterOption), 1);
     } else {
         props.selected.push(filterOption);
     }

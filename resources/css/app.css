@@ -3,3 +3,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mythic {
+    color: purple;
+}
+
+.fabled {
+    color: coral;
+}
+
+.legendary {
+    color: turquoise;
+}
+
+.rare {
+    color: magenta;
+}
+
+.unique {
+    color: yellow;
+}
+
+.set {
+    color: lime;
+}

@@ -1,5 +1,5 @@
 <template>
-    <table class="m-10 border border-black">
+    <table class="m-10 text-gray-300 border border-gray-300">
         <thead>
             <tr>
                 <Heading sortKey="name">Item Name</Heading>

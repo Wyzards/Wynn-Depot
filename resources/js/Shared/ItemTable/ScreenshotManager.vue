@@ -1,5 +1,5 @@
 <template>
-    <td class="border border-black">
+    <td class="border border-gray-300">
         <div class="flex items-center" v-if="!hasScreenshot && isAuthenticated">
             <input
                 :id="'upload.' + itemId"
@@ -9,7 +9,7 @@
             />
             <label :for="'upload.' + itemId">
                 <p
-                    class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 hover:cursor-pointer"
+                    class="px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out border border-transparent rounded-md hover:cursor-pointer bg-sky-900 hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                     Upload
                 </p>
