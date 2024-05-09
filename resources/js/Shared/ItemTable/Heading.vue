@@ -2,7 +2,7 @@
     <th
         @click="sortable && sortBy()"
         :class="{
-            'border border-black': true,
+            'p-1 border border-black': true,
             'hover:cursor-pointer': sortable,
         }"
     >

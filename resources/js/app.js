@@ -10,7 +10,7 @@ import { createPinia } from "pinia";
 const appName = import.meta.env.VITE_APP_NAME || "Wynn Depot";
 
 createInertiaApp({
-    title: (title) => `Wynn Depot - ${title}`,
+    title: (title) => `${appName} - ${title}`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.vue`,

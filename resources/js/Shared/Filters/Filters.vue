@@ -61,7 +61,7 @@
 
         <button
             @click="filters.clear()"
-            class="p-2 bg-red-400 border border-black rounded-lg h-fit"
+            class="p-2 bg-red-500 border border-transparent rounded-lg h-fit"
         >
             <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg">
                 <line

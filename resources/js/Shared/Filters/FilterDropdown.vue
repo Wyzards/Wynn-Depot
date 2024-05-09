@@ -1,16 +1,9 @@
 <template>
     <Dropdown :closeOnClick="false">
         <template #trigger>
-            <button
-                :class="{
-                    'px-2 text-sm text-white border border-black rounded-lg h-7': true,
-                    'bg-blue-500': hasOptions,
-                    'bg-gray-600': !hasOptions,
-                }"
-                :disabled="!hasOptions"
-            >
+            <PrimaryButton :disabled="!hasOptions">
                 <slot /> {{ selected.length > 0 ? `(${selected.length})` : "" }}
-            </button>
+            </PrimaryButton>
         </template>
 
         <template #content>
@@ -18,7 +11,7 @@
                 v-for="option in options"
                 @click="clickFilter(option)"
                 :class="{
-                    'hover:bg-gray-300': !selected.includes(option),
+                    'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out': true,
                     'bg-blue-300': selected.includes(option),
                 }"
             >
@@ -30,6 +23,7 @@
 
 <script setup>
 import Dropdown from "@/Components/Dropdown.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { computed } from "vue";
 
 const props = defineProps({

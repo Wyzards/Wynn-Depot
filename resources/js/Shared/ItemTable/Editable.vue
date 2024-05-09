@@ -1,7 +1,7 @@
 <template>
-    <td class="border border-black w-fit">
-        <input v-show="isAuthenticated" v-model="model" />
-        <p v-show="!isAuthenticated" v-text="model" />
+    <td class="border border-black">
+        <input :class="width" v-show="isAuthenticated" v-model="model" />
+        <p v-show="!isAuthenticated" v-text="model" class="p-1" />
         <p v-if="errors" v-text="errors" class="text-red-500" />
     </td>
 </template>
@@ -14,6 +14,10 @@ const model = defineModel();
 
 defineProps({
     errors: String,
+    width: {
+        type: String,
+        default: "w-20",
+    },
 });
 
 const isAuthenticated = computed(() => !!usePage().props.auth.user);

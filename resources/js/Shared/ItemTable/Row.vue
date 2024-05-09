@@ -1,16 +1,35 @@
 <template>
     <tr>
-        <td class="border border-black">{{ item.name }}</td>
-        <td class="border border-black">{{ item.level }}</td>
-        <td class="border border-black">{{ item.type }}</td>
-        <td class="border border-black">{{ item.tier }}</td>
-        <td class="border border-black">{{ item.restrictions }}</td>
+        <td class="border border-black">
+            <p class="p-1">{{ item.name }}</p>
+        </td>
+        <td class="border border-black">
+            <p class="p-1">{{ item.level }}</p>
+        </td>
+        <Editable
+            :errors="itemForm.errors.storage"
+            v-model="storage"
+            width="w-30"
+        />
         <Editable :errors="itemForm.errors.percent" v-model="percent" />
-        <Editable :errors="itemForm.errors.storage" v-model="storage" />
-        <Editable :errors="itemForm.errors.notes" v-model="notes" />
+        <td class="border border-black">
+            <textarea
+                style="width: 500px"
+                v-if="isAuthenticated"
+                v-model="notes"
+                class="overflow-hidden h-28"
+            />
+            <p v-else class="p-1" v-text="notes" />
+            <p
+                v-if="itemForm.errors.notes"
+                v-text="itemForm.errors.notes"
+                class="text-red-500"
+            />
+        </td>
 
         <ScreenshotManager
             @update="setScreenshot"
+            :itemId="item.id"
             :imagePath="item.image"
             :errors="itemForm.errors.screenshot"
         />
@@ -18,8 +37,8 @@
 </template>
 
 <script setup>
-import { useForm } from "@inertiajs/vue3";
-import { watch, ref } from "vue";
+import { useForm, usePage } from "@inertiajs/vue3";
+import { watch, ref, computed } from "vue";
 import ScreenshotManager from "./ScreenshotManager.vue";
 import debounce from "lodash/debounce";
 import Editable from "./Editable.vue";
@@ -27,6 +46,8 @@ import Editable from "./Editable.vue";
 const props = defineProps({
     item: Object,
 });
+
+const isAuthenticated = computed(() => !!usePage().props.auth.user);
 
 const itemForm = useForm({
     percent: props.item.percent,

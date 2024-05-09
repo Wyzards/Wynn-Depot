@@ -1,16 +1,14 @@
 <template>
     <Dropdown :closeOnClick="false">
         <template #trigger>
-            <button
-                class="px-2 text-sm text-white bg-blue-500 border border-black rounded-lg h-7"
-            >
+            <PrimaryButton>
                 Level
                 {{
                     minLevel > 0 || maxLevel < 105
                         ? `(${minLevel}-${maxLevel})`
                         : ""
                 }}
-            </button>
+            </PrimaryButton>
         </template>
 
         <template #content>
@@ -33,6 +31,7 @@
 </template>
 
 <script setup>
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Dropdown from "../../Components/Dropdown.vue";
 
 const minLevel = defineModel("minLevel");

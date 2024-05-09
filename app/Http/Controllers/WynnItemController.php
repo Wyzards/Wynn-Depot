@@ -10,7 +10,7 @@ class WynnItemController extends Controller
     public function index()
     {
         return Inertia::render('Home', [
-            'items' => WynnItem::filter(request(['search', 'tier', 'type', 'minLevel', 'maxLevel', 'misc', 'storage']))->orderBy(request('sortBy') ?? 'name', request('sortDirection') ?? 'asc')->paginate(20)->withQueryString(),
+            'items' => WynnItem::filter(request(['search', 'tier', 'type', 'minLevel', 'maxLevel', 'misc', 'storage']))->orderBy(request('sortBy') ?? 'name', request('sortDirection') ?? 'asc')->paginate(100)->withQueryString(),
             'storageOptions' => array_values(WynnItem::all()->unique('storage')->map(fn($item) => $item->storage)->filter(fn($storageValue) => $storageValue !== null)->toArray())
         ]);
     }

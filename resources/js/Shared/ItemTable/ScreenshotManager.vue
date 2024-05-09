@@ -1,21 +1,34 @@
 <template>
     <td class="border border-black">
-        <input
-            type="file"
-            v-if="!hasScreenshot && isAuthenticated"
-            @change="handleFileChange"
-        />
-        <p v-if="errors" v-text="errors" class="text-red-500" />
-        <PrimaryButton v-if="hasScreenshot" @click="showImage">
-            Show Image
-        </PrimaryButton>
+        <div class="flex items-center" v-if="!hasScreenshot && isAuthenticated">
+            <input
+                :id="'upload.' + itemId"
+                type="file"
+                class="hidden"
+                @change="handleFileChange"
+            />
+            <label :for="'upload.' + itemId">
+                <p
+                    class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 hover:cursor-pointer"
+                >
+                    Upload
+                </p>
+            </label>
+        </div>
 
-        <PrimaryButton
-            v-if="hasScreenshot && isAuthenticated"
-            @click="removeImage"
-        >
-            Remove Image
-        </PrimaryButton>
+        <div class="flex flex-col">
+            <PrimaryButton v-if="hasScreenshot" @click="showImage">
+                Show
+            </PrimaryButton>
+
+            <PrimaryButton
+                v-if="hasScreenshot && isAuthenticated"
+                @click="removeImage"
+            >
+                Remove
+            </PrimaryButton>
+        </div>
+        <p v-if="errors" v-text="errors" class="text-red-500" />
     </td>
 </template>
 
@@ -26,6 +39,7 @@ import { useItemImageStore } from "/stores/ItemImageStore.js";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const props = defineProps({
+    itemId: Number,
     imagePath: String,
     errors: String,
 });
