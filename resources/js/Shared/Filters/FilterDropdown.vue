@@ -2,7 +2,12 @@
     <Dropdown :closeOnClick="false">
         <template #trigger>
             <button
-                class="px-2 text-sm text-white bg-blue-500 border border-black rounded-lg h-7"
+                :class="{
+                    'px-2 text-sm text-white border border-black rounded-lg h-7': true,
+                    'bg-blue-500': hasOptions,
+                    'bg-gray-600': !hasOptions,
+                }"
+                :disabled="!hasOptions"
             >
                 <slot /> {{ selected.length > 0 ? `(${selected.length})` : "" }}
             </button>
@@ -25,6 +30,7 @@
 
 <script setup>
 import Dropdown from "@/Components/Dropdown.vue";
+import { computed } from "vue";
 
 const props = defineProps({
     selected: Array,
@@ -32,6 +38,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["selectFilter"]);
+const hasOptions = computed(() => props.options.length > 0);
 
 function clickFilter(filterOption) {
     if (props.selected.includes(filterOption)) {

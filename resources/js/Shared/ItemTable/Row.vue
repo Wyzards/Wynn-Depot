@@ -5,15 +5,9 @@
         <td class="border border-black">{{ item.type }}</td>
         <td class="border border-black">{{ item.tier }}</td>
         <td class="border border-black">{{ item.restrictions }}</td>
-        <Editable :callback="editPercent" :errors="itemForm.errors.percent">
-            {{ item.percent }}
-        </Editable>
-        <Editable :callback="editStorage" :errors="itemForm.errors.storage">
-            {{ item.storage }}
-        </Editable>
-        <Editable :callback="editNotes" :errors="itemForm.errors.notes">
-            {{ item.notes }}
-        </Editable>
+        <Editable :errors="itemForm.errors.percent" v-model="percent" />
+        <Editable :errors="itemForm.errors.storage" v-model="storage" />
+        <Editable :errors="itemForm.errors.notes" v-model="notes" />
 
         <ScreenshotManager
             @update="setScreenshot"
@@ -25,9 +19,10 @@
 
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-import Editable from "./Editable.vue";
+import { watch, ref } from "vue";
 import ScreenshotManager from "./ScreenshotManager.vue";
 import debounce from "lodash/debounce";
+import Editable from "./Editable.vue";
 
 const props = defineProps({
     item: Object,
@@ -45,23 +40,23 @@ const updateItem = debounce(function (values) {
     itemForm.post(`items/${itemForm.id}`);
 }, 300);
 
-function editPercent(event) {
-    itemForm.percent = event.target.innerText;
-    updateItem();
-}
-
-function editStorage(event) {
-    itemForm.storage = event.target.innerText;
-    updateItem();
-}
-
-function editNotes(event) {
-    itemForm.notes = event.target.innerText;
-    updateItem();
-}
-
 function setScreenshot(screenshot) {
     itemForm.screenshot = screenshot;
     updateItem();
 }
+
+const percent = ref(itemForm.percent);
+const storage = ref(itemForm.storage);
+const notes = ref(itemForm.notes);
+
+watch(
+    [percent, storage, notes],
+    debounce(() => {
+        itemForm.percent = percent;
+        itemForm.storage = storage;
+        itemForm.notes = notes;
+
+        updateItem();
+    }, 300)
+);
 </script>

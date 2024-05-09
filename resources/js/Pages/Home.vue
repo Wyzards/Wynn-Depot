@@ -19,7 +19,7 @@
             <h1 class="mb-8 text-8xl">WynnDepot.</h1>
             <Modal />
 
-            <Filters />
+            <Filters :storageOptions="storageOptions" />
 
             <Table :items="items" />
 
@@ -36,8 +36,9 @@ import Filters from "../Shared/Filters/Filters.vue";
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
-let props = defineProps({
+const props = defineProps({
     items: Object,
+    storageOptions: Array,
 });
 
 let auth = computed(() => {

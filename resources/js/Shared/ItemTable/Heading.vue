@@ -1,9 +1,36 @@
 <template>
-    <th class="border border-black"><slot /></th>
+    <th
+        @click="sortable && sortBy()"
+        :class="{
+            'border border-black': true,
+            'hover:cursor-pointer': sortable,
+        }"
+    >
+        <slot />
+    </th>
 </template>
 
 <script setup>
-defineProps({
+import { useItemFilterStore } from "/stores/ItemFilterStore.js";
+
+const props = defineProps({
     items: Object,
+    sortKey: String,
+    sortable: {
+        type: Boolean,
+        default: true,
+    },
 });
+
+const filters = useItemFilterStore();
+const sortBy = function () {
+    filters.sortDirection =
+        filters.sortBy == props.sortKey
+            ? filters.sortDirection == "asc"
+                ? "desc"
+                : "asc"
+            : "asc";
+    filters.sortBy = props.sortKey;
+    filters.update();
+};
 </script>

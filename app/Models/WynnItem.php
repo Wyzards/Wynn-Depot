@@ -14,7 +14,6 @@ class WynnItem extends Model
 
     public function scopeFilter($query, array $filters): void
     {
-
         $query->when(
             $filters['misc'] ?? false,
             function (Builder $query, array $misc) {
@@ -48,11 +47,15 @@ class WynnItem extends Model
             }
         );
 
-        $query->when($filters['level'] ?? false, fn($query, $level) => $query
-            ->where('level', '>=', $level['min'])
-            ->where('level', '<=', $level['max']));
+
+        $query->when($filters['minLevel'] ?? false, fn($query, $minLevel) => $query
+            ->where('level', '>=', $minLevel));
+        $query->when($filters['maxLevel'] ?? false, fn($query, $maxLevel) => $query
+            ->where('level', '<=', $maxLevel));
 
         $query->when($filters['type'] ?? false, fn($query, $type) => $query->whereIn('type', $type));
+
+        $query->when($filters['storage'] ?? false, fn($query, $storage) => $query->whereIn('storage', $storage));
 
         $query->when($filters['tier'] ?? false, fn($query, $tier) => $query->whereIn('tier', $tier));
 

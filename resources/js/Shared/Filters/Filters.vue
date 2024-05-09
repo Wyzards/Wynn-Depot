@@ -8,7 +8,7 @@
             @selectFilter="
                 (sel) => {
                     filters.tiers.selected = sel;
-                    updateFilters();
+                    filters.update();
                 }
             "
         >
@@ -21,39 +21,17 @@
             @selectFilter="
                 (sel) => {
                     filters.types.selected = sel;
-                    updateFilters();
+                    filters.update();
                 }
             "
         >
             Type
         </FilterDropdown>
 
-        <Dropdown :closeOnClick="false">
-            <template #trigger>
-                <button
-                    class="px-2 text-sm text-white bg-blue-500 border border-black rounded-lg h-7"
-                >
-                    Level
-                </button>
-            </template>
-
-            <template #content>
-                <div class="flex justify-evenly">
-                    <input
-                        v-model="minLvl"
-                        type="text"
-                        placeholder="0"
-                        class="w-14"
-                    />
-                    <input
-                        v-model="maxLvl"
-                        type="text"
-                        placeholder="105"
-                        class="w-14"
-                    />
-                </div>
-            </template>
-        </Dropdown>
+        <LevelDropdown
+            v-model:minLevel="minLevel"
+            v-model:maxLevel="maxLevel"
+        />
 
         <FilterDropdown
             :options="filters.misc.options"
@@ -61,7 +39,7 @@
             @selectFilter="
                 (sel) => {
                     filters.misc.selected = sel;
-                    updateFilters();
+                    filters.update();
                 }
             "
         >
@@ -69,12 +47,12 @@
         </FilterDropdown>
 
         <FilterDropdown
-            :options="filters.misc.options"
-            :selected="filters.misc.selected"
+            :options="storageOptions"
+            :selected="filters.storage.selected"
             @selectFilter="
                 (sel) => {
-                    filters.misc.selected = sel;
-                    updateFilters();
+                    filters.storage.selected = sel;
+                    filters.update();
                 }
             "
         >
@@ -82,7 +60,7 @@
         </FilterDropdown>
 
         <button
-            @click="clearFilters"
+            @click="filters.clear()"
             class="p-2 bg-red-400 border border-black rounded-lg h-fit"
         >
             <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg">
@@ -106,51 +84,28 @@
 </template>
 
 <script setup>
-import Dropdown from "@/Components/Dropdown.vue";
-import { useItemFilterStore } from "/stores/ItemFilterStore.js";
-import FilterDropdown from "./FilterDropdown.vue";
-import { router } from "@inertiajs/vue3";
 import { watch, ref } from "vue";
+import { useItemFilterStore } from "/stores/ItemFilterStore.js";
 import debounce from "lodash/debounce";
+import FilterDropdown from "./FilterDropdown.vue";
+import LevelDropdown from "./LevelDropdown.vue";
+
+const props = defineProps({
+    storageOptions: Array,
+});
 
 const filters = useItemFilterStore();
 const search = ref(filters.search);
-const minLvl = ref(filters.level.min);
-const maxLvl = ref(filters.level.max);
+const minLevel = ref(filters.level.min);
+const maxLevel = ref(filters.level.max);
 
 watch(
-    [search, minLvl, maxLvl],
+    [search, minLevel, maxLevel],
     debounce(function (values) {
         filters.search = search;
-        filters.level.min = minLvl;
-        filters.level.max = maxLvl;
-
-        updateFilters();
+        filters.level.min = minLevel;
+        filters.level.max = maxLevel;
+        filters.update();
     }, 300)
 );
-
-function clearFilters() {
-    filters.search = null;
-    filters.tiers.selected = [];
-    filters.types.selected = [];
-    filters.level.min = 0;
-    filters.level.max = 105;
-    filters.misc.selected = [];
-
-    updateFilters();
-}
-
-function updateFilters() {
-    router.get(
-        "/",
-        {
-            search: filters.search,
-            tier: filters.tiers.selected,
-            type: filters.types.selected,
-            level: filters.level,
-            misc: filters.misc.selected,
-        },
-        { preserveState: true, replace: true }
-    );
-}
 </script>
