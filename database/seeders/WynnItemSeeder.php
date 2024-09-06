@@ -17,7 +17,7 @@ class WynnItemSeeder extends Seeder
 
         foreach ($items as $name => $item)
         {
-            if (!array_key_exists("type", $item) && !array_key_exists("accessoryType", $item))
+            if ((!array_key_exists("type", $item) || $item["type"] == "ingredient" || $item["type"] == "material") && !array_key_exists("accessoryType", $item))
             {
                 continue;
             }
@@ -29,7 +29,7 @@ class WynnItemSeeder extends Seeder
                 [
                     'name' => $name,
                     'level' => $item["requirements"]["level"],
-                    'tier' => $item["rarity"],
+                    'tier' => array_key_exists("rarity", $item) ? $item["rarity"] : "normal",
                     'type' => array_key_exists("type", $item) ? $item["type"] : $item["accessoryType"],
                     'restrictions' => array_key_exists("restrictions", $item) ? strtolower($item["restrictions"]) : null
                 ]
